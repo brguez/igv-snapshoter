@@ -310,9 +310,11 @@ fi
 # 4. Programs/Scripts
 ######################
 srcDir=$rootDir/src
+binDir=$rootDir/bin
 
 SOMATIC2BED=$srcDir/somatic2bed_TraFiC.py
 BED2BATCH=$srcDir/bed2IgvBatch.py
+IGV=$binDir/igv.sh
 
 ## DISPLAY PROGRAM CONFIGURATION  
 ##################################
@@ -413,15 +415,14 @@ fi
 #######################
 # output are: 
 ###########
-# - $
-# 
+# 
 step="IGV-SNAPSHOTS"
 startTime=$(date +%s)
 printHeader "Executing igv batch file generation step"  
 
 mkdir $outDir/snapshots
 cd $outDir/snapshots
-run "/Users/brodriguez/Research/Apps/IGV/2.3.72/igv.sh /Users/brodriguez/Research/Scripts/Bash/igv-snapshoter/conf/igv_session.xml -g $genome -b $batchFile" "$ECHO"
+run "$IGV -g $genome -b $batchFile" "$ECHO"
 
 
 ######################
