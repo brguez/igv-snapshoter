@@ -239,7 +239,7 @@ fi
 ## ~~~~~~~~~~~~~~~~~~~
 
 if [[ ! -e $input ]]; then log "The TraFiC TE insertion calls file does not exist. Mandatory argument -i\n" "ERROR" >&2; usageDoc; exit -1; fi
-if [[ ! -e $bam ]]; then log "The BAM file does not exist. Mandatory argument -b" "ERROR" >&2; usageDoc; exit -1; fi
+if [[ $bam == "" ]]; then log "The list of BAM file is not provided. Mandatory argument -b" "ERROR" >&2; usageDoc; exit -1; fi
 if [[ $sampleId == "" ]]; then log "The sample id is not provided. Mandatory argument -s\n" "ERROR" >&2; usageDoc; exit -1; fi
 
 
@@ -411,8 +411,9 @@ fi
 
 # 3) Execute the IGV on the already generated batch file to take the snapshots:
 ##############################################################################
-# outputs a png for each bed entry
-###################################
+# outputs a png for each bed entry in:
+######################################
+# - $outDir/snapshots
 
 step="IGV-SNAPSHOTS"
 startTime=$(date +%s)
