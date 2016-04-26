@@ -347,7 +347,7 @@ eval "for i in {1..${#header}};do printf \"-\";done"
 printf "\n\n"
 start=$(date +%s)
 
-logFile=$outDir/snapshoter.log
+logFile=$outDir/snapshoter_${sampleId}.log
 	 
 # 1) Produces a bed file with the transposable element (TE) insertion and
 ###########################################################################
@@ -365,7 +365,7 @@ then
 	startTime=$(date +%s)
 	printHeader "Executing conversion of insertion coordinates into bed step"  
 	
-	run "python $SOMATIC2BED $input $sampleId --margin $margin --outDir $outDir > snapshoter.log" "$ECHO"	
+	run "python $SOMATIC2BED $input $sampleId --margin $margin --outDir $outDir > $logFile" "$ECHO"	
 
 	if [ -s $insertionCoords ]; 
 	then
@@ -395,7 +395,7 @@ then
 	startTime=$(date +%s)
 	printHeader "Executing igv batch file generation step"  
 
-	run "python $BED2BATCH $insertionCoords $bam $sampleId --genome $genome --track $track --margin $marginPlot --max-height $maxHeight --format $format --outDir $outDir >> snapshoter.log" "$ECHO"
+	run "python $BED2BATCH $insertionCoords $bam $sampleId --genome $genome --track $track --margin $marginPlot --max-height $maxHeight --format $format --outDir $outDir >> $logFile" "$ECHO"
 
 	if [ -s $batchFile ]; 
 	then
