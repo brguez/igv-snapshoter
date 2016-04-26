@@ -46,11 +46,19 @@ for line in somaticInsertions:
     line = line.rstrip('\n')
     line = line.split("\t")
     projectId = line[0]
-    donorId = line[1]
-    tumourId = line[2]
+    tumourId = line[1]
+    donorId = line[2]
     insertChr = line[3]
-    insertBeg = line[4]
-    insertEnd = line[5]
+    
+    # + cluster end < - cluster beg: 
+    if line[4] < line[5]:
+	insertBeg = line[4]
+    	insertEnd = line[5]
+    # - cluster beg < + cluster end
+    else:
+    	insertBeg = line[5]
+    	insertEnd = line[4]
+
     family = line[6]
     gene = line[7]
     insertType = line[8]
@@ -69,7 +77,7 @@ for line in somaticInsertions:
     if family != "empty":  
         
         # Report TE insertion coordinates in bed format
-        featureName = "insertionBkp" + "-" + family + "-" + insertType + ":" + insertChr + "_" + insertBeg + "_" + insertEnd  
+        featureName = projectId + "#" + donorId + "#" + tumourId + ":" + "insertionBkp" + "-" + family + "-" + insertType + ":" + insertChr + "_" + insertBeg + "_" + insertEnd  
         row = insertChr + "\t" + insertBeg + "\t" + insertEnd + "\t" + featureName + "\n"
         outFile.write(row)
         
@@ -97,7 +105,7 @@ for line in somaticInsertions:
                 end = sourcePos2
             
             # Report the coordinates
-            featureName = "transducedRegion" + "-" + family + "-" + insertType + ":" + insertChr + "_" + insertBeg + "_" + insertEnd 
+            featureName = projectId + "#" + donorId + "#" + tumourId + ":" + "transducedRegion" + "-" + family + "-" + insertType + ":" + insertChr + "_" + insertBeg + "_" + insertEnd 
             row = sourceChr + "\t" + str(beg) + "\t" + str(end) + "\t" + featureName + "\n"
             outFile.write(row)
         
