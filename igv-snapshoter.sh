@@ -32,37 +32,37 @@ Execute  for one dataset (sample).
 
 *** MANDATORY 
 		
-	-i	<TXT>		TraFiC TE somatic insertion calls for a given sample.		
+	-i	<TXT>			TraFiC TE somatic insertion calls for a given sample.		
 
-	-b	<BAM>		BAM file with the WGS reads aligned in the reference genome.	
+	-b	<BAM_1,...,BAM_n>	Comma-delimited list of full paths to the BAM files which will be displayed in the IGV.
 	
-	-s	<STRING>	Sample id. Output file will be named accordingly.	
+	-s	<STRING>		Sample id. Output file will be named accordingly.	
 		
 *** [OPTIONS] can be:
 * General:
  
-	-g 	<STRING>        Genome version. Default=hg19.
+	-g 	<STRING>        	Genome version. Default=hg19.
 
-	-m	<INTEGER>       Margin for those orphan and partnered transductions whose source element has not been identified.
-                       		Coordinates range extended up and down-stream N bases from the transduced region to span the source element.
-                        	Default: N=5000.
+	-m	<INTEGER>       	Margin for those orphan and partnered transductions whose source element has not been identified.
+                       			Coordinates range extended up and down-stream N bases from the transduced region to span the source element.
+                        		Default: N=5000.
 	
-	-M 	<INTEGER>       Margin for the snapshot. Coordinates range extended up and down-stream N bases from the region of interest.
-                        	Default: N=1000.
-
-  	-t      <TXT>      	Additional track to be displayed in the screenshot. E.g. genomic repeats or gene annotation. 
-				Supported formats: GFF2, GFF3 and GTF. Default: no track.
-
-	-h	<INTEGER>	Sets the number of vertical pixels (height) of each panel to include in image. Increase it to see more
-                        	data, decrease it to create smaller images. 
-				Default: N=1000.
-
-	-f 	<FORMAT>    	Snapshot image format. Supported formats: png, jpg and svg. 
-				Default: png.	
-
-	-o	<PATH>		Output directory. Default current working directory. 
+	-M 	<INTEGER>       	Margin for the snapshot. Coordinates range extended up and down-stream N bases from the region of interest.
+                        		Default: N=1000.
 	
-	-h			Display usage information.
+  	-t      <TXT>      		Additional track to be displayed in the screenshot. E.g. genomic repeats or gene annotation. 
+					Supported formats: GFF2, GFF3 and GTF. Default: no track.
+
+	-h	<INTEGER>		Sets the number of vertical pixels (height) of each panel to include in image. Increase it to see more
+                        		data, decrease it to create smaller images. 
+					Default: N=1000.
+	
+	-f 	<FORMAT>    		Snapshot image format. Supported formats: png, jpg and svg. 
+					Default: png.	
+
+	-o	<PATH>			Output directory. Default current working directory. 
+	
+	-h				Display usage information.
 		
 
 help
@@ -409,13 +409,11 @@ else
 	printHeader "Batch file already exists... skipping step"
 fi
 
-# 3) Execute the IGV on the already generated batch file:
-########################################################
-# to take the snapshots
-#######################
-# output are: 
-###########
-# 
+# 3) Execute the IGV on the already generated batch file to take the snapshots:
+##############################################################################
+# outputs a png for each bed entry
+###################################
+
 step="IGV-SNAPSHOTS"
 startTime=$(date +%s)
 printHeader "Executing igv batch file generation step"  
@@ -429,7 +427,7 @@ run "$IGV -g $genome -b $batchFile" "$ECHO"
 # 4) CLEANUP AND END #
 ######################
 
-#rm $insertionCoords $batchFile 
+rm $insertionCoords $batchFile 
 
 end=$(date +%s)
 printHeader "igv-snapshoter.sh for $sampleID completed in $(echo "($end-$start)/60" | bc -l | xargs printf "%.2f\n") min "
